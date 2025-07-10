@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+</head>
+<body>
+    <button type="button" id="all_btn" class="btn">전체보기</button>
+    <button type="button" id="empno_btn" class="btn">사번검색</button>
+    <button type="button" id="search_btn" class="btn">검색</button>
+    <button type="button" id="product_btn" class="btn">제품</button>
+    <button type="button" id="login_btn" class="btn">로그인</button>
+
+    <div id="empno_dig">
+        <form action="/Ex2" method="post" name="ff">
+        <table>
+            <caption>사번검색 테이블</caption>
+            <tbody>
+            <tr>
+                <td><label for="empno_tx">검색할 사번:</label></td>
+                <td>
+                    <input type="text" id="empno_tx" name="empno_tx"/>
+                </td>
+            </tr>
+            </tbody>
+            <tfoot>
+            <tr>
+                <td colspan="2">
+                    <button type="button" id="send_btn" class="btn">검색</button>
+                </td>
+            </tr>
+            </tfoot>
+        </table>
+        </form>
+    </div>
+
+
+    <div id="login_dig">
+        <form action="/Ex5" method="post" name="frm2">
+            <table>
+                <caption>로그인 테이블</caption>
+                <tbody>
+                <tr>
+                    <td><label for="id_tx">아이디:</label></td>
+                    <td>
+                        <input type="text" id="id_tx" name="id_tx"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td><label for="pw_tx">비밀번호:</label></td>
+                    <td>
+                        <input type="password" id="pw_tx" name="pw_tx"/>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <button type="button" id="send_login" class="btn">로그인</button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+
+
+    <div id="search_dig">
+        <form action="/Ex3" method="post" name="frm">
+            <table>
+                <caption>검색 테이블</caption>
+                <tbody>
+                <tr>
+                    <td>
+                        <select id="searchType" name="searchType">
+                            <option value="0">사번</option>
+                            <option value="1">이름</option>
+                            <option value="2">직종</option>
+                            <option value="3">부서코드</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" id="searchValue"
+                               name="searchValue"/>
+                    </td>
+                </tr>
+                </tbody>
+                <tfoot>
+                <tr>
+                    <td colspan="2">
+                        <button type="button" id="search_btn2" class="btn">검색</button>
+                    </td>
+                </tr>
+                </tfoot>
+            </table>
+        </form>
+    </div>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+<script>
+    $(function (){
+        $(".btn").button();
+
+        $("#all_btn").click(function () {
+            //서블릿 요청
+            location.href = "/Ex1"; //Ex1이라는 서블릿을 호출한다.
+        });
+
+        let option = {
+            modal: true,
+            autoOpen: false,
+            title: '사번검색',
+            resizable: false,
+        };
+
+        $("#empno_dig").dialog(option); //다이얼로그 창 등록
+        $("#search_dig").dialog(option); //다이얼로그 창 등록
+        $("#login_dig").dialog(option); //다이얼로그 창 등록
+
+        $("#login_btn").click(function (){
+            $("#login_dig").dialog("open");
+        });
+
+        $("#send_login").click(function (){
+            //유효성 검사 생략!
+            document.frm2.submit(); //id_tx와 pw_tx가 넘어간다
+        });
+
+        $("#empno_btn").click(function () { //사번검색 버튼 누르면 다이얼로그 창 열린다.
+            $("#empno_dig").dialog("open");
+        });
+
+        $("#send_btn").click(function () {
+            let num = $("#empno_tx").val();
+
+            if (num.trim().length == 0) {
+                alert("검색할 사번을 입력하세요");
+                //document.getElementById("empno_tx").value = ""; //청소
+                $("#empno_tx").val(""); //청소
+                $("#empno_tx").focus(); //입력란에 커서 놓기
+                return;
+            } else {
+            //대화창의 검색버튼을 클릭했을때 form을 서버로 보내야 한다.
+            document.ff.submit(); //폼 전달, name으로 받음(ff)
+        }
+        });
+
+        $("#search_btn").click(function (){
+            $("#search_dig").dialog("open");
+
+        });
+
+        $("#search_btn2").click(function (){
+            document.frm.submit();
+        });
+
+        $("#product_btn").click(function () {
+            //검색 메뉴버튼을 클릭할 때마다 수행!
+            location.href = "/Ex4"; //Ex4로 화면 이동 로그인이 안됐으면 수행하면 안됨!!!
+        });
+    });
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <!--서버로 데이터를 보낼때는
+    가장 기초적인 방법은 form을 통하는 것이다. -->
+    <form action="/MyServlet2" method="post">
+        ID:
+        <input type="text" id="m_id" name="m_id"/>
+        <br/>
+        PW:
+        <input type="password" id="m_pw" name="m_pw"/>
+        <br/>
+        <button type="button" onclick="exe()">로그인</button>
+    </form>
+
+<script>
+    function exe() {
+        // 유효성 검사
+        let mId = document.getElementById("m_id");
+        let mPw = document.getElementById("m_pw");
+
+        if(mId.value.trim().length == 0){
+            alert("아이디를 입력하세요");
+            mId.value = "";
+            mId.focus();
+            return;
+        }
+        if(mPw.value.trim().length == 0){
+            alert("비밀번호를 입력하세요");
+            mPw.value = "";
+            mPw.focus();
+            return;
+        }
+
+        //폼을 서버로 보낸다.(submit)
+        document.forms[0].submit();
+    }
+</script>
+</body>
+</html>

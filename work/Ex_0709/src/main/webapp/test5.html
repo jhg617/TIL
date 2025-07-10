@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h2>회원가입</h2>
+    <form action="/MyServlet5" method="post">
+        <label for="m_id">ID:</label>
+        <input type="text" id="m_id" name="m_id"/><br/>
+        <label for="m_name">NAME:</label>
+        <input for="text" id="m_name" name="m_name"/><br/>
+        <label for="m_phone">PHONE:</label>
+        <select id="m_phone" name="m_phone">
+            <option value="010">010</option>
+            <option value="011">011</option>
+            <option value="017">017</option>
+        </select>
+        -
+        <input type="text" id="m_phone2" name="m_phone"/>
+        -
+        <input type="text" id="m_phone3" name="m_phone"/><br/>
+        <label for="m_hobby">HOBBY:</label>
+        <input type="checkbox" id="m_hobby" name="m_hobby" value="독서">독서&nbsp;
+        <input type="checkbox" id="m_hobby2" name="m_hobby" value="영화감상">영화감상&nbsp;
+        <input type="checkbox" id="m_hobby3" name="m_hobby" value="음악감상">음악감상&nbsp;
+        <br/>
+        <button type="button" onclick="exe(this.form)">보내기</button>
+        <button type="reset">다시입력</button>
+    </form>
+
+<script>
+    function exe(frm) {
+        frm.submit();
+    }
+</script>
+</body>
+</html>
