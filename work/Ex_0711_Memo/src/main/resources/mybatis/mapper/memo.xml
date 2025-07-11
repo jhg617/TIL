@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="memo">
+    <select id="all" resultType="mybatis.vo.EmpVO">
+        select * from memo_t
+    </select>
+
+    <select id="get_memo" resultType="mybatis.vo.MemoVO" parameterType="String">
+        SELECT * FROM memo_t
+        WHERE
+    </select>
+
+    <insert id="add" parameterType="mybatis.vo.EmpVO">
+        INSERT INTO memo_t(writer, content, reg_date, ip)
+        VALUES(#{writer}, #{content}, #{reg_date}, #{ip})
+    </insert>
+</mapper>

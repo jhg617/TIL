@@ -25,10 +25,10 @@ public class Ex4Servlet extends HttpServlet {
         //이름이 "mvo"인 객체를 얻어낸다.
         Object obj = session.getAttribute("mvo");
         if(obj == null){
-            //로그인이 안된 경우
+            //로그인이 안된 경우(mvo가 없을경우)
             response.sendRedirect("/ex1_emp.html");
         }else{
-            //로그인이 된 경우
+            //로그인이 된 경우(mvo가 있을경우)
             MemVO mvo = (MemVO) obj;
             out.println("<h2>"+mvo.getM_name()+"님 환영</h2>");
         }
