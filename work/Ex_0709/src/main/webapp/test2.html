@@ -9,33 +9,33 @@
     가장 기초적인 방법은 form을 통하는 것이다. -->
     <form action="/MyServlet2" method="post">
         ID:
-        <input type="text" id="m_id" name="m_id"/>
+        <input type="text" id="m_id" name="m_id"/> <!--아이디 입력창-->
         <br/>
         PW:
-        <input type="password" id="m_pw" name="m_pw"/>
+        <input type="password" id="m_pw" name="m_pw"/> <!--패스워드 입력창-->
         <br/>
-        <button type="button" onclick="exe()">로그인</button>
+        <button type="button" onclick="exe()">로그인</button> <!--버튼 창(이벤트 감지)-->
     </form>
 
 <script>
-    function exe() {
+    function exe() { //로그인 버튼을 눌렀을 때 실행
         // 유효성 검사
-        let mId = document.getElementById("m_id");
-        let mPw = document.getElementById("m_pw");
+        let mId = document.getElementById("m_id"); //ID영역 태그의 name으로 id 가져와서 mId에 저장
+        let mPw = document.getElementById("m_pw"); //PW영역 태그의 name으로 pw 가져와서 mPw에 저장
 
-        if(mId.value.trim().length == 0){
+        if(mId.value.trim().length == 0){ // 만약 id를 입력하지 않았을경우 실행
             alert("아이디를 입력하세요");
-            mId.value = "";
-            mId.focus();
+            mId.value = ""; //id 입력란 빈칸으로 두기
+            mId.focus(); //id 입력란에 커서 넣기
             return;
         }
-        if(mPw.value.trim().length == 0){
+        if(mPw.value.trim().length == 0){ //만약 pw를 입력하지 않을경우 실행
             alert("비밀번호를 입력하세요");
             mPw.value = "";
             mPw.focus();
-            return;
+            return; // 함수가 즉시 중단되고 호출한곳으로 돌아간다.
         }
-
+        //위의 유효성검사가 모두 통과할경우 return을 무시하고 아래 구문이 실행된다.
         //폼을 서버로 보낸다.(submit)
         document.forms[0].submit();
     }

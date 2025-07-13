@@ -15,8 +15,8 @@ public class MyServlet2 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         // 요청한 곳으로부터 인자로 넘어오는 값을 하나씩 받는다.
-        String mId = request.getParameter("m_id");
-        String mPw = request.getParameter("m_pw");
+        String mId = request.getParameter("m_id"); //입력한 아이디 값
+        String mPw = request.getParameter("m_pw"); //입력한 비밀번호
 
         System.out.println(mId+":"+mPw); //아이디:비밀번호
     }

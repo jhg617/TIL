@@ -9,43 +9,74 @@
     <header>
       <h2>회원가입 폼 연습</h2>
     </header>
-      <form action="/MyServlet4" method="post">
+      <form action="/MyServlet4" method="post"> <!--경로 지정, 요청방식: post-->
       ID:
-        <input type="text" id="m_id" name="m_id"/>
+        <input type="text" id="m_id" name="m_id"/> <!--아이디 입력란-->
         <br/>
       Name:
-        <input type="text" id="m_name" name="m_name"/>
+        <input type="text" id="m_name" name="m_name"/> <!--이름 입력란-->
         <br/>
-      <label>Phone</label>
-        <select id="m_phone1" name="m_phone">
-          <option value="" disabled selected>02</option>
+      <label>Phone</label> <!--라벨(표기) : Phone-->
+        <select id="m_phone1" name="m_phone"> <!--옵션 선택 가능한 드롭다운-->
+          <option value="" disabled selected>::선택::</option> <!--선택 문구(선택은 못함)-->
           <option value="010">010</option>
           <option value="011">011</option>
           <option value="017">017</option>
         </select>
+        <span>-</span> <!--드롭다운과 연결할 문자열-->
+        <input type="text" id="m_phone2" name="m_phone"/> <!--전화번호 두번째 영역 입력란-->
         <span>-</span>
-        <input type="text" id="m_phone2" name="m_phone"/>
-        <span>-</span>
-        <input type="text" id="m_phone3" name="m_phone"/>
+        <input type="text" id="m_phone3" name="m_phone"/> <!--전화번호 세번째 영역 입력란-->
         <br/>
       Hobby:
-        <input type="checkbox" id="chk1" name="chk" value="독서">독서</input>
-
+        <input type="checkbox" id="chk1" name="chk" value="독서">독서</input> <!--체크박스-->
         <input type="checkbox" id="chk2" name="chk" value="영화">영화</input>
-
         <input type="checkbox" id="chk3" name="chk" value="게임">게임</input>
-
         <br/>
-      <button type="button" onclick="exe(this.form)">저장</button>
+      <button type="button" onclick="exe(this.form)">저장</button> <!--저장 버튼(누르면 이벤트 감지)-->
     </form>
   </article>
 <script>
   function exe(frm) {
     //유효성 검사
-    /*let mId = document.getElementById("m_id");
+    let mId = document.getElementById("m_id");
     let mNm = document.getElementById("m_name");
-    let mPn = document.getElementsByName("m_phone1", "m_phone2", "m_phone3");
-    let mHb = document.getElementsByName("chk1", "chk2", "chk3");*/
+    let mPn = document.getElementsByName("m_phone");
+    let mHb_chk = document.getElementsByName("chk");
+    let chkCount = 0;
+
+    if(mId.value.trim().length == 0){
+      alert("아이디를 입력하세요!");
+      mId.value("");
+      mId.focus();
+      return;
+    }
+    if(mNm.value.trim().length == 0){
+      alert("이름을 입력하세요!");
+      mNm.value("");
+      mNm.focus();
+      return;
+    }
+    for(let i=0; i<mPn.length; i++){
+      if(mPn[i].value.trim().length == 0){
+        alert("전화번호를 입력하세요!");
+        mPn[i].value("");
+        mPn.focus();
+        return;
+      }
+    }//for의 끝
+    for(let i=0; i<mHb_chk.length; i++){
+      if (mHb_chk[i].checked) { // .checked 가 true이면 체크된 상태
+        chkCount++;
+      } else if (chkCount >= 2) {
+        alert("한개만 선택하세요!");
+        return;
+      } else if (chkCount == 0){
+        alert("취미를 선택하세요!");
+        return;
+      }
+    }//for의 끝
+
     //폼에 있는 데이터를 서버로 보낸다.
     //document.forms[0].submit();
     frm.submit();
