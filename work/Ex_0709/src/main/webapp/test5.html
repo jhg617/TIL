@@ -6,33 +6,33 @@
 </head>
 <body>
     <h2>회원가입</h2>
-    <form action="/MyServlet5" method="post">
+    <form action="/MyServlet5" method="post"> <!--전송 경로 및 요청방식-->
         <label for="m_id">ID:</label>
-        <input type="text" id="m_id" name="m_id"/><br/>
+        <input type="text" id="m_id" name="m_id"/><br/> <!--아이디 입력란-->
         <label for="m_name">NAME:</label>
-        <input for="text" id="m_name" name="m_name"/><br/>
+        <input for="text" id="m_name" name="m_name"/><br/> <!--이름 입력란-->
         <label for="m_phone">PHONE:</label>
-        <select id="m_phone" name="m_phone">
-            <option value="010">010</option>
-            <option value="011">011</option>
-            <option value="017">017</option>
+        <select id="m_phone" name="m_phone"> <!--전화번호 드롭다운-->
+            <option value="010">010</option> <!--드롭다운 옵션1-->
+            <option value="011">011</option> <!--드롭다운 옵션2-->
+            <option value="017">017</option> <!--드롭다운 옵션3-->
         </select>
         -
-        <input type="text" id="m_phone2" name="m_phone"/>
+        <input type="text" id="m_phone2" name="m_phone"/> <!--전화번호 두번째 영역-->
         -
-        <input type="text" id="m_phone3" name="m_phone"/><br/>
+        <input type="text" id="m_phone3" name="m_phone"/><br/> <!--전화번호 세번째 영역-->
         <label for="m_hobby">HOBBY:</label>
-        <input type="checkbox" id="m_hobby" name="m_hobby" value="독서">독서&nbsp;
-        <input type="checkbox" id="m_hobby2" name="m_hobby" value="영화감상">영화감상&nbsp;
-        <input type="checkbox" id="m_hobby3" name="m_hobby" value="음악감상">음악감상&nbsp;
+        <input type="checkbox" id="m_hobby" name="m_hobby" value="독서">독서&nbsp;<!--체크박스1-->
+        <input type="checkbox" id="m_hobby2" name="m_hobby" value="영화감상">영화감상&nbsp;<!--체크박스2-->
+        <input type="checkbox" id="m_hobby3" name="m_hobby" value="음악감상">음악감상&nbsp;<!--체크박스3-->
         <br/>
-        <button type="button" onclick="exe(this.form)">보내기</button>
-        <button type="reset">다시입력</button>
+        <button type="button" onclick="exe(this.form)">보내기</button> <!--보내기 버튼(누르면 이벤트 감지)-->
+        <button type="reset">다시입력</button> <!--다시입력 버튼(내용 초기화)-->
     </form>
 
 <script>
     function exe(frm) {
-        frm.submit();
+        frm.submit(); //폼 전송
     }
 </script>
 </body>
