@@ -3,13 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css"> <!--jQuery UI 라이브러리 추가-->
 </head>
 <body>
     <button type="button" id="all_btn" class="btn">전체보기</button>
     <button type="button" id="empno_btn" class="btn">사번검색</button>
     <button type="button" id="search_btn" class="btn">검색</button>
-    <!--<button type="button" id="search_btn_ex3" class="btn">검색</button>-->
 
     <div id="empno_dig">
         <form action="/Ex2" method="post" name="ff">
@@ -66,44 +65,48 @@
             </table>
         </form>
     </div>
+<!--jQuery 및 jQuery UI 라이브러리-->
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+<!--HTML이 모두 로드되면 script 코드 실행-->
 <script>
     $(function (){
-        $(".btn").button();
+        $(".btn").button(); //class가 "btn"인 모든 버튼에 jQuery UI의 버튼 스타일 적용
 
-        $("#all_btn").click(function () {
+        $("#all_btn").click(function () { //전체보기 버튼 눌렀을때 동작
             //서블릿 요청
-            location.href = "/Ex1"; //Ex1이라는 서블릿을 호출한다.
+            location.href = "/Ex1"; //현재 페이지를 Ex1이라는 서블릿주소로 이동시킨다.
         });
 
+        // 다이얼로그에 적용할 옵션을 객체로 정의
         let option = {
-            modal: true,
-            autoOpen: false,
-            title: '사번검색',
-            resizable: false,
+            modal: true, //모달창: 팝업창이 뜨면 뒷 배경은 비활성화됨
+            autoOpen: false, //페이지 로딩 시 자동열림 비활성화
+            title: '사번검색', //다이얼로그 제목
+            resizable: false, //팝업창 크기지정 비활성화
         };
 
-        $("#empno_dig").dialog(option); //다이얼로그 창 등록
-        $("#search_dig").dialog(option); //다이얼로그 창 등록
-
-        $("#empno_btn").click(function () { //사번검색 버튼 누르면 다이얼로그 창 열린다.
+        //다이얼로그 창 등록
+        $("#empno_dig").dialog(option); // id가 "empno_dig"인 div를 위에서 정의한 옵션으로 다이얼로그 창으로 만든다. (초기화)
+        $("#search_dig").dialog(option); // id가 "search_dig"인 div도 다이얼로그 창으로 만든다 (초기화)
+        $("#empno_btn").click(function () { //사번검색 버튼 누르면 "empno_dig" 다이얼로그 창이 열림
             $("#empno_dig").dialog("open");
         });
 
-
+        //사번검색 버튼 > 다이얼로그 창 > 검색버튼 눌렀을때 수행
         $("#send_btn").click(function (){
+            //사번 입력창(#empno_tx)의 값을 가져온다.
             let num = $("#empno_tx").val();
-
-            if(num.trim().length == 0){
+            // 입력값이 비어있는지 유효성 검사 실시
+            if(num.trim().length == 0){ //사번을 입력하지 않았을때
                 alert("검색할 사번을 입력하세요");
-                //document.getElementById("empno_tx").value = ""; //청소
-                $("#empno_tx").val(""); //청소
+                //document.getElementById("empno_tx").value = ""; //입력창 청소
+                $("#empno_tx").val(""); //입력창 청소
                 $("#empno_tx").focus(); //입력란에 커서 놓기
-                return;
+                return; //함수 즉시 종료
             }
-            if(num.trim().length =! 0){
-                $("#empno_tx").val(num);
+            if(num.trim().length =! 0){ //사번을 입력했을때
+                $("#empno_tx").val(num); //사번입력창의 값
             }
            //대화창의 검색버튼을 클릭했을때 form을 서버로 보내야 한다.
             document.ff.submit(); //폼 전달, name으로 받음(ff)
