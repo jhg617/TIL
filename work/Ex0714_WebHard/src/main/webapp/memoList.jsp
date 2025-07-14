@@ -1,6 +1,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="mybatis.vo.MemoVO" %>
 <%@ page import="mybatis.dao.MemoDAO" %>
+<%@ page import="mybatis.vo.MemVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -88,6 +89,8 @@
   if(obj == null)
     response.sendRedirect("index.jsp");//강제 페이지 이동
 
+  MemVO vo = (MemVO) obj;
+
   String msg = null;
   if(cmd != null && cmd.equals("1"))
     msg = "저장완료!";
@@ -164,7 +167,8 @@
         <td>
           <input type="text" id="writer"
                  name="writer"
-                 value=""/>
+                 value="<%=vo.getM_name() %>" <%--disabled--%> readonly/>
+          <%--readonly: 작성자 수정불가, disabled: 글쓰기를 해도 인자를 받지못해 작성자가 null로 나온다.--%>
         </td>
       </tr>
       <tr>

@@ -21,4 +21,22 @@ public class MemberDAO {
 
         return mvo;
     }
+
+    public static int registry(MemVO mvo){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        int cnt = ss.insert("member.add", mvo);
+        if(cnt > 0)
+            ss.commit();
+        else
+            ss.rollback();
+        ss.close();
+        return cnt;
+    }
+    //찾아서 인자로 전달 후 자바스크립트에서 true false 확인. true면 중복, false 중복x
+    public static MemVO checkId(String id){
+        SqlSession ss = FactoryService.getFactory().openSession();
+        MemVO mvo = ss.selectOne("member.check", id);
+        ss.close();
+        return mvo;
+    }
 }

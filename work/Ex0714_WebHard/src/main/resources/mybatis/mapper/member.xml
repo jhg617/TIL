@@ -8,6 +8,18 @@
     <select id="login" parameterType="Map"
             resultType="mybatis.vo.MemVO">
         SELECT * FROM member_t
-        WHERE m_id = #{m_id} AND m_pw = #{m_pw}
+        WHERE m_id = #{m_id} AND m_pw = #{m_pw} AND status = 0
+    </select>
+
+    <!--인자로 MemVO를 받아서 member를 추가하는 insert-->
+    <insert id="add" parameterType="mybatis.vo.MemVO">
+        INSERT INTO member_t(m_id, m_pw, m_name, m_phone, reg_date, status)
+        VALUES(#{m_id}, #{m_pw}, #{m_name}, #{m_phone}, NOW(), 0)
+    </insert>
+
+    <!-- 아이디를 인자로 받아서 중복확인 수행하는 select-->
+    <select id="check" parameterType="mybatis.vo.MemVO">
+        SELECT * FROM member_t
+        WHERE m_id = #{m_id}
     </select>
 </mapper>
