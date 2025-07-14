@@ -6,7 +6,7 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>Insert title here</title>
 
-    <style type="text/css">
+    <style>
         .btn{
             width: 70px;
             height: 20px;
@@ -52,13 +52,11 @@
     String mode = request.getParameter("mode");
     //HttpSession객체가 session이라는 이름으로 이미 생성되어 제공되고 있다.
     //이런 HttpSession은 브라우저를 닫을 때까지 사용가능함!
-    //세션에 "mvo"라는 이름으로 저장된 것이 있다면 로그인을 한 상태로 인지하자!
-    //먼저 세션으로부터 "mvo"라는 이름으로 저장된 객체를 얻어내어
-    //Object형 변수 obj에 저장하자!
+    // 세션에 "mvo"라는 이름으로 저장된 것이 있다면 로그인을 한 상태로 인지하자!
+    // 먼저 세션으로부터 "mvo"라는 이름으로 저장된 객체를 얻어내어
+    // Object형 변수 obj에 저장하자!
     Object obj = session.getAttribute("mvo");
     if(obj == null){
-
-
 %>
 <div id="log_fail" class="show">
 
@@ -96,14 +94,14 @@
 </div>
 <%
     }else{
-        //obj가 null이 아닐경우다.
-        //이름을 얻기 위해 Object형으로 두면 안되고, MemVO로 형변환을 해야
-        //이름을 얻을 수 있다.
+        //obj가  null이 아닐 경우다.
+        // 이름을 얻기 위해 Object형으로 두면 안되고, MemVO로 형변환을 해야
+        // 이름을 얻을 수 있다.
         MemVO mvo = (MemVO) obj;
 %>
 <div id="log_suc" class="show">
 
-    <p>(<%=mvo.getM_name()%>)님 환영</p>
+    <p>(<%=mvo.getM_name() %>)님 환영</p>
     <p class="btn">
         <a href="logout.jsp">로그아웃</a>
     </p>
@@ -112,7 +110,7 @@
     </p>
 </div>
 <%
-    }
+    }//if문의 끝
 %>
 
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
@@ -120,7 +118,7 @@
     function exe(){
         var id = $("#s_id");
         var pw = $("#s_pw");
-        //유효성 검사
+
         if(id.val().trim().length <= 0){
             alert("아이디를 입력하세요!");
             id.focus();

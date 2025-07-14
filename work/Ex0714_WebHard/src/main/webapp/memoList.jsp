@@ -1,6 +1,6 @@
+<%@ page import="java.util.List" %>
 <%@ page import="mybatis.vo.MemoVO" %>
 <%@ page import="mybatis.dao.MemoDAO" %>
-<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
 <!DOCTYPE html>
@@ -78,15 +78,15 @@
   </style>
 </head>
 <body>
-<% //파라미터 받기 위한 스크립트릿
+<%
   //index.jsp에서 현재 페이지로 넘어왔다면 cmd는 null이고,
-  //그렇지 않고 add_memo.jsp에서 왔다면 cmd는 0아니면 1을 가진다.
+  // 그렇지 않고 add_memo.jsp에서 왔다면 cmd는 0아니면 1을 가진다.
   String cmd = request.getParameter("cmd");
 
   //로그인이 되었는지 알아내야 한다.
   Object obj = session.getAttribute("mvo");
   if(obj == null)
-    response.sendRedirect("index.jsp"); //강제 페이지 이동
+    response.sendRedirect("index.jsp");//강제 페이지 이동
 
   String msg = null;
   if(cmd != null && cmd.equals("1"))
@@ -123,12 +123,12 @@
     <tbody>
     <%
       //현재 메모목록을 가져온다.
-      List<MemoVO> list = MemoDAO.getAll();
+      List<MemoVO> list = MemoDAO.memoList();
 
       if(list != null && list.size() > 0){
         //list가 null이 아니고 list.size()가 0보다 크다는 것은
-        // memo테이블로부터 가져온 데이터가 있다는 뜻이다. 그래서 반복문 수행해야 한다.
-        for (MemoVO mvo : list){
+        // memo테이블로부터 가져온 데이터가 있다는 뜻이다. 그래서 반복문 수행해야 함
+        for(MemoVO mvo : list){
     %>
         <tr>
           <td><%=mvo.getIdx() %></td>
@@ -138,15 +138,15 @@
         </tr>
     <%
         }//for의 끝
-      } else { //memo_t라는 테이블에 데이터가 없을 때
+      }else{ //memo_t라는 테이블에 데이터가 없을 때
     %>
-          <tr>
-            <td colspan="4" class="txt_center">
-              현재 등록된 데이터가 없습니다.
-            </td>
-          </tr>
+        <tr>
+          <td colspan="4" class="txt_center">
+            현재 등록된 데이터가 없습니다.
+          </td>
+        </tr>
     <%
-        }
+      }
     %>
 
     </tbody>
@@ -164,14 +164,14 @@
         <td>
           <input type="text" id="writer"
                  name="writer"
-                 value="<%--<%=vo.getM_name()=%>--%>"
-                 />
+                 value=""/>
         </td>
       </tr>
       <tr>
         <td><label for="content">내용:</label></td>
         <td>
-          <textarea cols="40" rows="6" id="content" name="content"></textarea>
+			<textarea cols="40" rows="6"
+                 id="content" name="content"></textarea>
         </td>
       </tr>
       <tr>
@@ -189,64 +189,63 @@
 </div>
 
 
-
 <div id="cmd_win" title="Message">
-  <%=cmd%>
+  <%=msg%>
 </div>
+
+
 <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script>
 
-  $(function () {
+  $(function (){
 
     let option = {
-      modal: false,
+      modal: true,
       autoOpen: false,
       title: '메모 추가',
       width: 450,
       height: 280,
-      resizable: false
+      resizable: false,
     };
 
     $("#write_win").dialog(option);
 
     <%
-      if (msg != null) {
+      if(msg != null){
     %>
       $("#cmd_win").dialog();
     <%
       }
     %>
+
   });
 
   function writeMemo() {
-    // 숨겨진 div를 보이도록 해야한다.
+    // 숨겨진 dialog를 보이도록 해야한다.
     $("#write_win").dialog("open");
   }
 
   function exe() {
-    //유효성검사(id로)
-    let writer = $("#writer").val().trim(); //공백도 값으로 넘어오기때문에 trim 진행
-    let content = $("#content").val().trim()
-
-    if(writer.length == 0){
-      alert("이름을 입력하세요");
-      $("#writer").val(""); //작성자 입력란 청소
-      $("#writer").focus(); //입력란에 커서 놓기
-      return;
-    }
+    let writer = $("#writer").val().trim();
+    let content = $("#content").val().trim();
 
     if(content.length == 0){
       alert("내용을 입력하세요");
-      $("#content").val(""); //내용 입력란 청소
-      $("#content").focus(); //입력란에 커서 놓기
+      $("#content").val("");
+      $("#content").focus();
       return;
     }
 
+    if(writer.length == 0){
+      alert("이름을 입력하세요");
+      $("#writer").val("");
+      $("#writer").focus();
+      return;
+    }
 
-    document.frm.submit(); //폼 전송
+    document.frm.submit();
   }
-
 </script>
 </body>
 </html>

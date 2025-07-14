@@ -5,12 +5,12 @@
 <mapper namespace="memo">
     <select id="all" resultType="mybatis.vo.MemoVO">
         select * from memo_t
-        ORDER BY idx DESC <!--가장 최근글이 위로 올라오게 지정-->
+        ORDER BY idx DESC
     </select>
 
     <!-- 메모를 저장하는 insert -->
     <insert id="add" parameterType="Map">
         INSERT INTO memo_t(writer, content, reg_date, ip)
-        VALUES(#{writer}, #{content}, NOW(), #{ip}) <!--NOW(): 현재날짜-->
+        VALUES(#{writer}, #{content}, NOW(), #{ip})
     </insert>
 </mapper>
