@@ -87,14 +87,14 @@
   //로그인이 되었는지 알아내야 한다.
   Object obj = session.getAttribute("mvo");
   if(obj == null)
-    response.sendRedirect("index.jsp");//강제 페이지 이동 (Get방식)
+    response.sendRedirect("index.jsp");//강제 페이지 이동
 
   MemVO vo = (MemVO) obj;
 
   String msg = null;
-  if(cmd != null && cmd.equals("1")) //null이 아니고 1일 경우
+  if(cmd != null && cmd.equals("1"))
     msg = "저장완료!";
-  else if(cmd != null && cmd.equals("0")) //null이 아니고 0일 경우
+  else if(cmd != null && cmd.equals("0"))
     msg = "저장실패!";
 %>
 <div id="wrap">

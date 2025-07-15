@@ -70,7 +70,7 @@
         <tr>
           <td><label for="u_id">아이디:</label></td>
           <td>
-            <input type="text" id="u_id" name="u_id" value="${param.u_id}"/> <%--<%if(m_id != null) out.print(m_id);%>--%>
+            <input type="text" id="u_id" name="u_id" value="${param.u_id}"/>
             <button type="button" id="chk_btn" onclick="chkID()">중복확인</button>
             <div id="box"><%--사용가능 또는 사용불가 --%>
             <%
@@ -85,13 +85,13 @@
         <tr>
           <td><label for="u_pw">비밀번호:</label></td>
           <td>
-            <input type="password" id="u_pw" name="u_pw" value="${param.u_pw}"/> <%--value를 파라미터로 주기--%>
+            <input type="password" id="u_pw" name="u_pw" value="${param.u_pw}"/>
           </td>
         </tr>
         <tr>
           <td><label for="u_name">이름:</label></td>
           <td>
-            <input type="text" id="u_name" name="u_name" value="${param.u_name}"/> <%--value를 파라미터로 주기--%>
+            <input type="text" id="u_name" name="u_name" value="${param.u_name}"/>
           </td>
         </tr>
         <tr>
@@ -99,14 +99,14 @@
           <td>
             <select id="u_phone" name="u_phone">
               <option value="02" <% if(u_phone != null && u_phone[0].equals("02")) out.print("selected"); %>>02</option>
-              <option value="010" <% if(u_phone != null && u_phone[0].equals("010")) out.print("selected");%>>010</option>
-              <option value="012" <% if(u_phone != null && u_phone[0].equals("012")) out.print("selected");%>>012</option>
-              <option value="017" <% if(u_phone != null && u_phone[0].equals("017")) out.print("selected");%>>017</option>
+              <option value="010" <% if(u_phone != null && u_phone[0].equals("010")) out.print("selected"); %>>010</option>
+              <option value="012">012</option>
+              <option value="017">017</option>
             </select>
             <label for="u_phone2">-</label>
-            <input type="text" id="u_phone2" name="u_phone" value="${paramValues.u_phones[1]}"/> <%--value를 파라미터로 주기--%>
+            <input type="text" id="u_phone2" name="u_phone" value="${paramValues.u_phone[1]}"/>
             <label for="u_phone3">-</label>
-            <input type="text" id="u_phone3" name="u_phone" value="${paramValues.u_phones[2]}"/> <%--value를 파라미터로 주기--%>
+            <input type="text" id="u_phone3" name="u_phone" value="${paramValues.u_phone[2]}"/>
           </td>
         </tr>
         <tr>
