@@ -1,0 +1,23 @@
+@charset "UTF-8";
+
+#title{
+    font-size:30px;
+    color: maroon;
+}
+table.table{
+    border-collapse: collapse;
+    width: 600px;
+    margin: 0 auto;
+}
+table.table th, table.table td{
+    border: 1px solid navy;
+    padding: 5px;
+    font-size: 11px;
+}
+input[type=number]{
+    width: 30px;
+}
+.txt_c{text-align: center}
+a:link{text-decoration:none; color:navy}
+a:visited{text-decoration:none; color:navy}
+a:hover{text-decoration:none; color:red}

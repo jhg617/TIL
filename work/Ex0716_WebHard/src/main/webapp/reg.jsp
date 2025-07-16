@@ -52,10 +52,11 @@
       margin: 0;
       margin-left: 3px;
     }
-    .success{ color: #00f; font-weight: bold; font-size: 11px; }
-    .fail{ color: #f00; font-weight: bold; font-size: 11px; }
+    .success{color: blue; font-weight: bold; font-size: 11px; }
+    .fail{color: red; font-weight: bold; font-size: 11px; }
 
-    div#my_alert{ display: none; }
+    div#my_alert{display: none;
+    }
   </style>
 </head>
 <body>
@@ -73,10 +74,9 @@
           <td><label for="u_id">아이디:</label></td>
           <td>
             <input type="text" id="u_id" name="u_id"/>
-            <%--
-            <button type="button" id="chk_btn" onclick="chkID()">중복확인</button>
-            --%>
-            <div id="box"><%--사용가능 또는 사용불가 --%></div>
+<%--            <button type="button" id="chk_btn" onclick="chkID()">중복확인</button>--%>
+            <div id="box">
+            </div>
           </td>
         </tr>
         <tr>
@@ -95,13 +95,13 @@
           <td><label for="u_phone">연락처:</label></td>
           <td>
             <select id="u_phone" name="u_phone">
-              <option value="02" >02</option>
-              <option value="010" >010</option>
+              <option value="02">02</option>
+              <option value="010">010</option>
               <option value="012">012</option>
               <option value="017">017</option>
             </select>
             <label for="u_phone2">-</label>
-            <input type="text" id="u_phone2" name="u_phone" />
+            <input type="text" id="u_phone2" name="u_phone"/>
             <label for="u_phone3">-</label>
             <input type="text" id="u_phone3" name="u_phone"/>
           </td>
@@ -110,7 +110,7 @@
           <td colspan="2">
             <p class="btn">
               <a href="javascript:send()">
-                저장
+                회원가입
               </a>
             </p>
           </td>
@@ -122,43 +122,40 @@
   </article>
 
   <div id="my_alert" title="경고">
-    <p id="str"></p>
-    <p class="btn">
-      <a href="javascript:closed()">닫기</a>
+    <p id="str">
+      <p class="btn">
+        <a href="javascript:close()">닫기</a>
     </p>
   </div>
 
   <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
   <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
   <script>
-    $(function (){
+    $(function () {
       // 아이디를 입력하는 입력란에서 키보드를 누를 때마다 이벤트 발생
-      $("#u_id").bind("keyup",function (){
-        //사용자가 입력한 아이디가 u_id에 입력되므로
-        // 그곳에 있는 값(value)을 가져온다.
+      $("#u_id").bind("keyup", function () {
+        // 사용자가 입력한 아이디가 u_id에 입력되므로 그곳에 있는 값(value)를 가져온다.
         let str = $(this).val();
-        //console.log(str);
+        // console.log(str);
 
-        // str의 값에서 공백이 있는지? 없는지? 판단하고 유효성 감사를 해야 함! 패스~
+        // str의 값에서 공백이 있는지 없는지 판단하고 유효성 검사를 해야 함
 
-        // 입력한 문자열의 길이가 4자이상일 때 비동기식 통신을 수행한다.
-        if(str.trim().length > 3){
-          // jQuery비동식 통신 수행
+        // 문자열이 4자 이상일 때 비동기식 통신을 수행
+        if (str.trim().length > 3){
+          // 제이쿼리 비동기식 통신 수행
           $.ajax({
             url: "idCheck.jsp",
             type: "post",
             data: {u_id: str.trim()}
-          }).done(function (result){
-            //요청에 성공했을 때
+          }).done(function (result) {
+            // 요청에 성공했을 때
             $("#box").html(result);
           });
-        }else
+        }else {
           $("#box").html("");
-
+        }
       });
     });
-
-
     function send() {
       // 아이디,비밀번호, 이름을 입력했는지? 유효성 검사
       let mId = $("#u_id").val().trim();
@@ -166,8 +163,8 @@
       let mName = $("#u_name").val().trim();
 
       let chk = $("#chk").hasClass("success");
-      if(!chk){
-        $("#str").html("아이디를 체크 하세요");
+      if (!chk){
+        $("#str").html("아이디를 체크하세요");
         $("#my_alert").dialog();
         return;
       }
@@ -205,18 +202,26 @@
         $("#u_id").focus();
         return;
       }
-      //---- 비동기식 통신 -------//
+      //----------- 비동기식 통신 -----------//
       $.ajax({
-        url: "idCheck.jsp", // 호출할 서버경로
-        type: "post", //요청방식(타입)
-        data: "u_id="+encodeURIComponent(mId),//파라미터
-      }).done(function (result){
-        //요청에 성공했을 때 자동으로 수행하는 곳
+        url: "idCheck.jsp",
+        type: "post",
+        // 1안: key=value 형태의 문자열로 수정
+        // data: "u_id=" + mId,
+
+        // 2안: 객체 형태로 전달 (jQuery가 자동으로 쿼리 문자열로 변환) - 이 방법을 권장
+        data: { u_id: mId },
+
+      }).done(function (result) {
         $("#box").html(result.trim());
-      }).fail(function (err){
-        //요청에 실패했을 때 수행하는 곳
+      }).fail(function (err) {
         console.log(err);
       });
+
+    }
+
+    function close() {
+      $("#my_alert").dialog("close");
     }
   </script>
 </body>

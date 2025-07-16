@@ -22,7 +22,7 @@
 %>
 <html>
 <head>
-    <title>Title</title>
+  <title>Title</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
 
   <style>
@@ -44,6 +44,8 @@
       height: 20px;
       text-align: center;
       padding:0px;
+      display: inline-block;
+      margin-right: 20px;
     }
     .btn a{
       display: block;
@@ -89,7 +91,7 @@
     .success{ color: #00f; font-weight: bold; font-size: 11px; }
     .fail{ color: #f00; font-weight: bold; font-size: 11px; }
 
-    div#my_alert{ display: none; }
+    div#my_alert, #upload_win{ display: none; }
 
     .w50{ width: 50px; }
     .w80{ width: 80px; }
@@ -102,89 +104,93 @@
   // 로그인을 수행한 상태들만 허용하는 페이지이므로 로그인 검증하자!
   Object obj = session.getAttribute("mvo");
 
-  if(obj != null){//로그인을 수행한 경우
+  if(obj != null) {//로그인을 수행한 경우
     MemVO mvo = (MemVO) obj;
 
     //현재페이지로 올때 파라미터 하나 받는다. 그것은 바로 cPath다.
-    // 만약 없으며 null을 받는다는 것을 기억하자!!
+    // 만약 없으면 null을 받는다는 것을 기억하자!!
     String dir = request.getParameter("cPath");//위치 값
 
     String fname = request.getParameter("f_name");//폴더명
 
     //만약 dir이 null이면 접속한 사용자의 id를 넣어준다.
-    if(dir == null)
+    if (dir == null)
       dir = mvo.getM_id();
-    else{
+    else {
       // 이미 myDisk에 들어왔다가 다른 작업(폴더)를 클릭하여 요청한 경우
-      if(fname != null && fname.trim().length() > 0){
-        dir = dir+"/"+fname; //mmm/folder1
+      if (fname != null && fname.trim().length() > 0) {
+        dir = dir + "/" + fname; //mmm/folder1
       }
     }
+    session.setAttribute("dir", dir);
+
+    String r_path = application.getRealPath("/members/"+mvo.getM_id());
+    useSize = useSize(new File(r_path));
 %>
-  <h1>My Disk Service</h1>
-  <hr/>
+<h1>My Disk Service</h1>
+<hr/>
 <%=mvo.getM_name()%>(<span class="m_id"><%=mvo.getM_id()%></span>)님의 디스크
 &nbsp; [<a href="javascript:home()">Home</a>]
-  <hr/>
+<hr/>
 
-  <table>
-    <caption>디스크사용량 테이블</caption>
-    <tbody>
-      <tr>
-        <th class="title">전체용량</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th class="title">사용량</th>
-        <td></td>
-      </tr>
-      <tr>
-        <th class="title">남은용량</th>
-        <td></td>
-      </tr>
-    </tbody>
-  </table>
-  <hr/>
-    <div id="btn_area">
-      <p class="btn">
-        <a href="javascript:selectFile()">파일올리기</a>
-      </p>
-      <p class="btn">
-        <a href="javascript:makeFolder()">폴더생성</a>
-      </p>
-      <p class="btn">
-        <a href="javascript:exe()">파일생성</a>
-      </p>
-    </div>
-  <hr/>
-  <label for="dir">현재위치:</label>
-  <span id="dir"><%=dir%></span>
+<table>
+  <caption>디스크사용량 테이블</caption>
+  <tbody>
+  <tr>
+    <th class="title">전체용량</th>
+    <td><%=totalSize/1024%>KB</td>
+  </tr>
+  <tr>
+    <th class="title">사용량</th>
+    <td><%=useSize/1024%>KB</td>
+  </tr>
+  <tr>
+    <th class="title">남은용량</th>
+    <td><%=(totalSize-useSize)/1024%>KB</td>
+  </tr>
+  </tbody>
+</table>
+<hr/>
+<div id="btn_area">
+  <p class="btn">
+    <a href="javascript:selectFile()">파일올리기</a>
+  </p>
+  <p class="btn">
+    <a href="javascript:makeFolder()">폴더생성</a>
+  </p>
+  <p class="btn">
+    <a href="javascript:exe()">파일생성</a>
+  </p>
+</div>
+<hr/>
+<label for="dir">현재위치:</label>
+<span id="dir"><%=dir%></span>
 
-  <table>
-    <caption>위치폴더 안에 내용을 표현하는 테이블</caption>
-    <thead>
-      <tr>
-        <th class="w50">구분</th>
-        <th>폴더 및 파일명</th>
-        <th class="w80">삭제여부</th>
-      </tr>
-    </thead>
-    <tbody>
-<%
+<table>
+  <caption>위치폴더 안에 내용을 표현하는 테이블</caption>
+  <thead>
+  <tr>
+    <th class="w50">구분</th>
+    <th>폴더 및 파일명</th>
+    <th class="w80">삭제여부</th>
+  </tr>
+  </thead>
+  <tbody>
+  <%
     // [상위로] 기능 구현 - 현재위치값(dir)이 현재 로그인한 사용자의 id와
-  //  다를 경우에만 [상위로]기능이 주어져야 한다.
+    //  다를 경우에만 [상위로]기능이 주어져야 한다.
     if(!dir.equalsIgnoreCase(mvo.getM_id())){
       // 예를 들어 현재위치가 "mmm/abc/1234" 라면 상위로 기능은 "mmm/abc"를
       // 의미한다.
       int idx = dir.lastIndexOf("/");
       String upPath = dir.substring(0, idx);
-    %>
-      <tr>
-        <td colspan="2">
-          <a href="javascript:goUp('<%=upPath%>')">../</a>
-        </td>
-      </tr>
-    <%
+  %>
+  <tr>
+    <td colspan="2">
+      <a href="javascript:goUp('<%=upPath%>')">../</a>
+    </td>
+  </tr>
+  <%
     }//상위로 비교문의 끝
 
 
@@ -198,38 +204,74 @@
     File[] sub_list = s_file.listFiles();
 
     for(File f : sub_list){
-%>
-      <tr>
-        <td>
-        <% if(f.isFile()) out.print("파일"); %>
-        </td>
-        <td>
-          <% if(f.isDirectory()){ //디렉토리일 경우는 들어갈 수 있어야 한다. %>
-            <a href="javascript: gogo('<%=f.getName()%>')">
-              <%=f.getName()%>
-            </a>
-          <% }else{ %>
-          <%=f.getName()%>
-          <% } %>
-        </td>
-        <td></td>
-      </tr>
-<%
+  %>
+  <tr>
+    <td>
+      <% if(f.isFile()) out.print("파일"); %>
+    </td>
+    <td>
+      <% if(f.isDirectory()){ //디렉토리일 경우는 들어갈 수 있어야 한다. %>
+      <a href="javascript: gogo('<%=f.getName()%>')">
+        <%=f.getName()%>
+      </a>
+      <% }else{ %>
+      <%=f.getName()%>
+      <% } %>
+    </td>
+    <td></td>
+  </tr>
+  <%
     }//for의 끝
-%>
-    </tbody>
-  </table>
+  %>
+  </tbody>
+</table>
 
-  <form name="ff" method="post">
-    <input type="hidden" name="f_name"/>
+<form name="ff" method="post">
+  <input type="hidden" name="f_name"/>
+  <input type="hidden" name="cPath" value="<%=dir%>"/>
+</form>
+
+<%-- 파일첨부가 되는 폼은 반드시 enctype이 multipart/form-data로 지정되어야 함
+      폼에 파일을 첨부하게 되면 무조건 enctype이 위와 같아야 한다.
+ --%>
+<div id="upload_win" title="파일업로드">
+  <form action="upload.jsp" method="post" name="frm2"
+        enctype="multipart/form-data">
     <input type="hidden" name="cPath" value="<%=dir%>"/>
+    <label for="selectFile">첨부파일</label>
+    <%-- 파일선택기 --%>
+    <input type="file" id="selectFile" name="upload"/><br/>
+    <p class="btn">
+      <a href="javascript:upload()">보내기</a>
+    </p>
+    <p class="btn">
+      <a href="javascript:closeupload()">닫 기</a>
+    </p>
   </form>
+</div>
+<div id="folder_win" title="폴더만들기">
+  <form action="makeFolder.jsp" method="post" name="frm3">
+
+    <input type="hidden" name="cPath" value="<%=dir%>"/>
+    <label for="f_name">폴더명:</label>
+
+    <input type="text" id="f_name" name="f_name"/><br/>
+    <p class="btn">
+      <a href="javascript:makeFolder()">보내기</a>
+    </p>
+    <p class="btn">
+      <a href="javascript:closeFolder()">닫 기</a>
+    </p>
+  </form>
+</div>
 
 
 <%
   }else
     response.sendRedirect("../index.jsp");
 %>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
 <script>
   function home() {
     location.href="myDisk.jsp";
@@ -249,6 +291,20 @@
     document.ff.cPath.value = path;
     document.ff.action = "myDisk.jsp";
     document.ff.submit();
+  }
+
+  function selectFile() {
+    $("#upload_win").dialog()({
+      width:320,
+    });
+  }
+
+  function closeUpload() {
+    $("#upload_win").dialog("close");
+  }
+
+  function upload() {
+    document.frm2.submit();
   }
 </script>
 </body>
