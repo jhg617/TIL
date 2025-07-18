@@ -31,6 +31,7 @@ public class Controller3 extends HttpServlet {
                     break;
                 case "dept":
                     action = new DeptAction();
+                    break;
                 case "memo":
                     action = new MemoAction();
                     break;

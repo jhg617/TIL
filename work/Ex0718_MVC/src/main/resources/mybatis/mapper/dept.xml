@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dept">
+    <select id="all" resultType="mybatis.vo.DeptVO">
+        select d.deptno, d.dname, l.loc_code, l.city
+        from dept d INNER JOIN locations l
+        ON d.loc_code = l.loc_code
+    </select>
+</mapper>
