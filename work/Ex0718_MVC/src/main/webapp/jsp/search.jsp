@@ -1,6 +1,34 @@
-<%@ page import="mybatis.vo.EmpVO" %>
+<%@ page import="mybatis.vo.EmpVO, java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+
+<%--검색 결과를 만드는 코드(<tr>만 만드는 코드)--%>
+<%
+    Object obj = request.getAttribute("ar");
+    if(obj != null){
+        EmpVO[] ar = (EmpVO[]) obj;
+        if(ar.length > 0) {
+            for(EmpVO vo : ar){
+%>
+<tr>
+    <td><%=vo.getEmpno()%></td>
+    <td><%=vo.getEname()%></td>
+    <td><%=vo.getJob()%></td>
+    <td><%=vo.getDeptno()%></td>
+</tr>
+<%
+        }//for의 끝
+    } else {
+%>
+<tr>
+    <td colspan="6">검색된 정보가 없습니다.</td>
+</tr>
+<%
+        }
+    }
+%>
+
+<%--아래 코드는 불필요함--%>
+<%--<html>
 <head>
   <title>Title</title>
   <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
@@ -32,13 +60,13 @@
       <thead>
       <tr>
         <td colspan="6" class="txt_R noBorder">
-          <%--<button type="button" id="total_btn" onclick="javascript:location.href='Controller?type=total'">전체보기</button>--%>
+          &lt;%&ndash;<button type="button" id="total_btn" onclick="javascript:location.href='Controller?type=total'">전체보기</button>&ndash;%&gt;
           <button type="button" id="all_btn">전체(비동기식)</button>
           <button type="button" id="total_btn" onclick="total()">전체보기</button>
           <button type="button" id="search_btn" onclick="search()">검색</button>
           <button type="button" id="add_btn" onclick="javascript:location.href='Controller?type=add'">추가</button>
           <button type="button" id="dept_btn" onclick="dept()">부서목록</button>
-          <%----%>
+
           <div id="search_dig">
             <form action="Controller" method="post" name="frm">
               <table>
@@ -71,7 +99,7 @@
           </div>
         </td>
       </tr>
-      <%--다이얼로그--%>
+      &lt;%&ndash;다이얼로그&ndash;%&gt;
       <tr>
         <th>사번</th>
         <th>이름</th>
@@ -118,9 +146,11 @@
         $("table.table>tbody").html(res);
       });
     })
-  });
+  });--%>
 
-  function search() {
+  <%--****아래 코드는 index.jsp에서 작성되어야함. 해당 jsp는 검색결과만을 위한
+  //JSP이다.(단, AJAX 비동기식에 한해서만)
+  /*function search() {
     $("#search_dig").dialog("open");
   }
 
@@ -130,8 +160,8 @@
     title: '사번검색',
     resizable: true,
   };
-  $("#search_dig").dialog(option); //다이얼로그 창 등록
+  $("#search_dig").dialog(option); //다이얼로그 창 등록*/--%>
 
-</script>
+<%--</script>
 </body>
-</html>
+</html>--%>

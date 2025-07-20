@@ -12,23 +12,21 @@
         VALUES(#{empno}, #{ename}, #{job}, NOW())
     </insert>
 
-    <select id="search" resultType="mybatis.vo.EmpVO" parameterType="Map">
+    <select id="search" resultType="mybatis.vo.EmpVO" parameterType="java.util.Map">
         SELECT * FROM emp
-        <trim prefix="where">
-            <choose>
-                <when test="searchType != null and searchType == 0">
-                    empno = #{searchValue}
-                </when>
-                <when test="searchType != null and searchType == 1">
-                    ename LIKE CONCAT('%', #{searchValue}, '%')
-                </when>
-                <when test="searchType != null and searchType == 2"> <!--직업검색-->
-                    job LIKE CONCAT('%', #{searchValue}, '%') <!--포함된 문자열 검색-->
-                </when>
-                <when test="searchType != null and searchType == 3"> <!--부서검색-->
-                    deptno = #{searchValue};
-                </when>
-            </choose>
-        </trim>
+        <where>
+            <if test="searchValue != null and searchValue != ''">
+                <choose>
+                    <when test="searchType == '0'">
+                        empno = #{searchValue}
+                    </when>
+                    <when test="searchType == '1'">
+                        ename LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType == '2'"> job LIKE CONCAT('%', #{searchValue}, '%') </when>
+                    <when test="searchType == '3'"> deptno = #{searchValue} </when>
+                </choose>
+            </if>
+        </where>
     </select>
 </mapper>

@@ -5,6 +5,7 @@ import mybatis.vo.EmpVO;
 import org.apache.ibatis.session.SqlSession;
 
 import java.util.List;
+import java.util.Map;
 
 public class EmpDAO {
 
@@ -32,10 +33,10 @@ public class EmpDAO {
         return cnt;
     }
 
-    public static int search(EmpVO vo){
+    public static EmpVO[] search(Map<String, String> map){
         SqlSession ss = FactoryService.getFactory().openSession();
         EmpVO[] ar = null;
-        List<EmpVO> list = ss.selectList("emp.search", vo);
+        List<EmpVO> list = ss.selectList("emp.search", map); //파라미터로 Map 전달
         if(list != null && !list.isEmpty()){
             ar = new EmpVO[list.size()];
             list.toArray(ar);
