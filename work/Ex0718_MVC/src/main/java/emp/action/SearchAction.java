@@ -9,7 +9,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class SearchAction implements Action {
+//************* 250721 수정 ***************
+public class SearchAction implements Action{
+    @Override
+    public String execute(HttpServletRequest request, HttpServletResponse response) {
+        //파라미터 받기
+        String searchType = request.getParameter("searchType");
+        String searchValue = request.getParameter("searchValue");
+
+        EmpVO[] ar = EmpDAO.search(searchType, searchValue);
+        //request에 저장!
+        request.setAttribute("ar", ar);
+
+        return "jsp/search.jsp";
+    }
+}
+
+/*public class SearchAction implements Action {
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
         // 1. 파라미터 받기
@@ -30,4 +46,4 @@ public class SearchAction implements Action {
         // 5. 결과를 보여줄 JSP 경로 반환
         return "jsp/search.jsp";
     }
-}
+}*/

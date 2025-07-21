@@ -4,6 +4,7 @@ import mybatis.service.FactoryService;
 import mybatis.vo.EmpVO;
 import org.apache.ibatis.session.SqlSession;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -32,8 +33,29 @@ public class EmpDAO {
         ss.close();
         return cnt;
     }
+    //************* 250721 수정 ***************
+    public static EmpVO[] search(String searchType, String searchValue){
+        EmpVO[] ar = null;
 
-    public static EmpVO[] search(Map<String, String> map){
+        //안에서 Map 구조 만들기
+        Map<String, String> map = new HashMap<>();
+        if(searchType != null)
+            map.put("searchType", searchType);
+        if(searchValue != null)
+            map.put("searchValue", searchValue);
+
+        SqlSession ss = FactoryService.getFactory().openSession();
+        List<EmpVO> list = ss.selectList("emp.search", map);
+
+        if(list != null && list.size() > 0){
+            // DB로부터 받은것이 있다면 배열로 생성한다.
+            ar = new EmpVO[list.size()];
+            list.toArray(ar);
+        }
+        ss.close();
+        return ar;
+    }
+    /*public static EmpVO[] search(Map<String, String> map){
         SqlSession ss = FactoryService.getFactory().openSession();
         EmpVO[] ar = null;
         List<EmpVO> list = ss.selectList("emp.search", map); //파라미터로 Map 전달
@@ -43,5 +65,5 @@ public class EmpDAO {
         }
         ss.close();
         return ar;
-    }
+    }*/
 }

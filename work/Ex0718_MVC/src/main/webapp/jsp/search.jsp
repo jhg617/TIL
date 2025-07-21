@@ -1,33 +1,27 @@
 <%@ page import="mybatis.vo.EmpVO, java.util.Map" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%--검색 결과를 만드는 코드(<tr>만 만드는 코드)--%>
+<%--//************* 250721 수정 ***************--%>
 <%
-    Object obj = request.getAttribute("ar");
-    if(obj != null){
-        EmpVO[] ar = (EmpVO[]) obj;
-        if(ar.length > 0) {
-            for(EmpVO vo : ar){
+  Object obj = request.getAttribute("ar");
+  if(obj != null){
+    EmpVO[] ar = (EmpVO[]) obj;
+    for(EmpVO vo : ar){
 %>
-<tr>
-    <td><%=vo.getEmpno()%></td>
-    <td><%=vo.getEname()%></td>
-    <td><%=vo.getJob()%></td>
-    <td><%=vo.getDeptno()%></td>
-</tr>
+    <tr>
+      <td><%=vo.getEmpno()%></td>
+      <td><%=vo.getEname()%></td>
+      <td><%=vo.getJob()%></td>
+      <td><%=vo.getSal()%></td>
+      <td><%=vo.getHiredate()%></td>
+      <td><%=vo.getDeptno()%></td>
+    </tr>
 <%
-        }//for의 끝
-    } else {
-%>
-<tr>
-    <td colspan="6">검색된 정보가 없습니다.</td>
-</tr>
-<%
-        }
-    }
+      } //for의 끝
+    }//if의 끝
 %>
 
-<%--아래 코드는 불필요함--%>
+
 <%--<html>
 <head>
   <title>Title</title>
@@ -146,11 +140,11 @@
         $("table.table>tbody").html(res);
       });
     })
-  });--%>
+  });
 
-  <%--****아래 코드는 index.jsp에서 작성되어야함. 해당 jsp는 검색결과만을 위한
+  //****아래 코드는 index.jsp에서 작성되어야함. 해당 jsp는 검색결과만을 위한
   //JSP이다.(단, AJAX 비동기식에 한해서만)
-  /*function search() {
+  function search() {
     $("#search_dig").dialog("open");
   }
 
@@ -160,8 +154,33 @@
     title: '사번검색',
     resizable: true,
   };
-  $("#search_dig").dialog(option); //다이얼로그 창 등록*/--%>
+  $("#search_dig").dialog(option); //다이얼로그 창 등록
 
-<%--</script>
+  &lt;%&ndash;검색 결과를 만드는 코드(<tr>만 만드는 코드)&ndash;%&gt;
+  <%
+      Object obj = request.getAttribute("ar");
+      if(obj != null){
+          EmpVO[] ar = (EmpVO[]) obj;
+          if(ar.length > 0) {
+              for(EmpVO vo : ar){
+  %>
+  <tr>
+      <td><%=vo.getEmpno()%></td>
+      <td><%=vo.getEname()%></td>
+      <td><%=vo.getJob()%></td>
+      <td><%=vo.getDeptno()%></td>
+  </tr>
+  <%
+          }//for의 끝
+      } else {
+  %>
+  <tr>
+      <td colspan="6">검색된 정보가 없습니다.</td>
+  </tr>
+  <%
+          }
+      }
+  %>
+</script>
 </body>
 </html>--%>

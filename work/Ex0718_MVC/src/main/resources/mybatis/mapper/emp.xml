@@ -11,22 +11,28 @@
         INSERT INTO emp(empno, ename, job, hiredate)
         VALUES(#{empno}, #{ename}, #{job}, NOW())
     </insert>
-
-    <select id="search" resultType="mybatis.vo.EmpVO" parameterType="java.util.Map">
+<!--*********** 250721 수정 ***********-->
+    <!--검색하는 select : 파라미터로 searchType과 searchValue가 넘어온다. -->
+    <select id="search" resultType="Map" parameterType="mybatis.vo.EmpVO">
         SELECT * FROM emp
         <where>
-            <if test="searchValue != null and searchValue != ''">
+            <!--<if test="searchValue != null and searchValue != ''">-->
                 <choose>
-                    <when test="searchType == '0'">
+                    <when test="searchType != null and searchType == 0">
                         empno = #{searchValue}
                     </when>
-                    <when test="searchType == '1'">
-                        ename LIKE CONCAT('%', #{searchValue}, '%')
+                    <when test="searchType != null and searchType == 1">
+                        ename LIKE CONCATE('%', #{searchValue}, '%')
                     </when>
-                    <when test="searchType == '2'"> job LIKE CONCAT('%', #{searchValue}, '%') </when>
-                    <when test="searchType == '3'"> deptno = #{searchValue} </when>
+                    <when test="searchType != null and searchType == 2">
+                        job LIKE CONCAT('%', #{searchValue}, '%')
+                    </when>
+                    <when test="searchType != null and searchType == 3">
+                        deptno = #{searchValue}
+                        <!--#{col} = #{searchValue} *. 기준이 되는 컬럼명을 변수로 사용할 수 없다.-->
+                    </when>
                 </choose>
-            </if>
+            <!--</if>-->
         </where>
     </select>
 </mapper>

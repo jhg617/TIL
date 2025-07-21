@@ -64,7 +64,7 @@
                       <tfoot>
                       <tr>
                         <td colspan="2">
-                          <button type="button" id="search_btn2" class="btn">검색</button>
+                          <button type="button" id="send_btn" class="btn">검색</button>
                         </td>
                       </tr>
                       </tfoot>
@@ -103,9 +103,10 @@
   /*function search() {
     $("#search_dig").dialog("open");
   }*/
-  const CONTEXT_PATH = "${pageContext.request.contextPath}";
+  //const CONTEXT_PATH = "${pageContext.request.contextPath}";
 
   $(function () {
+
     //다이얼로그 옵션을 객체로 정의
     let option = {
       modal: true,
@@ -124,9 +125,11 @@
   // 전체(비동기식) 버튼 클릭 이벤트
   $("#all_btn").click(function () {
     $.ajax({ //비동기식 통신
-      url: CONTEXT_PATH + "/Controller",
+      url: "Controller",
       type: "post", //전송방식
-      data: {type: "all"}
+      data: {
+        type: "all"
+      }
     }).done(function (res) { //res는 AllAction이 수행된 후
       //응답되는 all.jsp에서 반복수행된 <tr>들이다. 이때 화면에서는 바뀐것처럼 보이지만 사실 index.jsp이다.
       //console.log(res);
@@ -135,16 +138,10 @@
     });
 
     // 다이얼로그 안의 검색 버튼 이벤트
-    $("#search_btn2").click(function () {
+    /*$("#search_btn2").click(function () {
         let searchType = $("#searchType").val();
         let searchValue = $("#searchValue").val();
 
-      /*//유효성 검사
-      if(searchValue.trim().length < 1){
-        alert("검색어를 입력하세요.");
-        $("#searchValue").focus();
-        return; // AJAX 호출 중단
-      }*/
       $.ajax({
         url: CONTEXT_PATH + "/Controller",
         type: "post",
@@ -156,6 +153,31 @@
         $("table.table>tbody").html(res);
         $("#search_dig").dialog("close"); //검색 후 다이얼로그 닫기
       });
+    });*/
+  });
+  //************* 250721 수정 ************
+  $("#send_btn").click(function (){
+    //유효성 검사
+    let value = $("#searchValue").val().trim();
+    if(value.length == 0){
+      alert("검색할 단어를 입력하세요");
+      $("#searchValue").val("");
+      $("#searchValue").focus();
+      return;
+    }
+
+    // 비동기식 통신 준비
+    $.ajax({
+      url: "Controller",
+      type: "post",
+      data: {
+        type: 'search',
+        searchType: $("#searchType").val(),
+        searchValue: value
+      }
+    }).done(function (res){ //<tr> 반복처리된 내용 res에 저장됨
+      $("table.table>tbody").html(res);
+      $("#search_dig").dialog("close");
     });
   });
 
