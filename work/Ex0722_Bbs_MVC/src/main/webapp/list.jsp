@@ -98,8 +98,9 @@
         <ol class="paging">
 <%
   Object obj1 = request.getAttribute("page");
+  Paging p = null;
   if(obj1 != null){
-    Paging p = (Paging) obj1;
+    p = (Paging) obj1;
 
     // 만약 page가 가지고 있는 startPage가 1이면
     // 이전 기능을 부여하면 안된다.
@@ -115,10 +116,17 @@
     int startPage = p.getStartPage();
     int endPage = p.getEndPage();
     for(int i= startPage; i<=endPage; i++){
+        if(p.getNowPage() == i){
 %>
-          <li <% if(p.getNowPage() == i){ %>class="now" <% }%>><%=i%></li> <%--1,2,3,4 ... 출력--%>
+          <li class="now"><%=i%></li>
 <%
+        }else{
+%>
+            <li><a href="Controller?type=list&cPage=<%=i%>"><%=i%></a></li>
+<%
+        }
     }//for의 끝
+
     if(p.getEndPage() < p.getTotalPage()){
 %>
           <li><a href="Controller?type=list&cPage=<%=p.getNowPage()+p.getPagePerBlock()%>">&gt;</a></li> <%--다음--%>
@@ -145,19 +153,26 @@
   Object obj = request.getAttribute("ar");
   if(obj != null){
     BbsVO[] ar = (BbsVO[]) obj;
+    int i = 0;
     for(BbsVO vo:ar){
+        int num = p.getTotalCount() - ((p.getNowPage()-1)*p.getNumPerPage()+i); //i는 페이지 번호
 %>
     <tr>
-      <td><%=vo.getB_idx()%></td>
+      <td><%=num%></td>
       <td style="text-align: left">
-        <a href="#">
+        <a href="Controller?type=view&b_idx=<%=vo.getB_idx()%>&cPage=${nowPage}"> <%--<%=p.getNowPage()%>">--%>
           <%=vo.getSubject()%>
+            <%
+                if(vo.getC_list() != null && vo.getC_list().size() > 0)
+                    out.print("("+vo.getC_list().size()+")");
+            %>
         </a></td>
       <td><%=vo.getWriter()%></td>
       <td><%=vo.getWrite_date()%></td>
       <td><%=vo.getHit()%></td>
     </tr>
 <%
+        i++; //인덱스 값 증가
     }//for의 끝
   }
 %>

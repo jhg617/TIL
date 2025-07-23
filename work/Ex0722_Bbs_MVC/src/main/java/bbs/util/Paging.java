@@ -50,7 +50,7 @@ public class Paging {
         endPage = startPage + pagePerBlock - 1;
 
         // 위에서 구한 마지막 페이지가 총 페이지 값을 넘어갈때가 빈번하게 생긴다.
-        if(endPage > totalPage)
+        if(endPage > totalPage) //마지막 페이지값은 총 페이지 수를 넘을 수 없다.
             endPage = totalPage;
     }
 
@@ -72,10 +72,11 @@ public class Paging {
         // 총 게시물 수가 변경될때 총 페이지수를 구하자!
         /*
         this.totalPage = totalCount / numPerPage;
-        if(totalCount % numPerPage != 0)
+        if(totalCount % numPerPage != 0) //나머지가 0이 아니면 총 페이지수 구하기
             this.totalPage++;
         */
-        this.totalPage = (int)Math.ceil((double)totalCount/numPerPage);
+        this.totalPage = (int)Math.ceil((double)totalCount/numPerPage); //ceil: 가장 가까운 높은 수
+                                                                        //ex) 나머지가 3.1이면 4가 된다.
     }
 
     public int getPagePerBlock() {

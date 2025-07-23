@@ -6,8 +6,11 @@
 
     <resultMap id="map1" type="mybatis.vo.BbsVO">
         <id property="b_idx" column="b_idx"/>
+
+        <!-- BbsVO에 있는 멤버변수들 중 List<CommVO> c_list; (1대 다 관계에서 사용)-->
         <collection property="c_list" ofType="mybatis.vo.CommVO"
             select="comm.list" column="b_idx"/> <!--collection: 여러개를 의미함-->
+        <!-- comm.list를 호출하면서 b_idx값을 인자로 보낸다. -->
     </resultMap>
 
     <!-- 총 게시물 수를 반환하는 기능-->
@@ -15,6 +18,12 @@
         SELECT COUNT(*) FROM bbs_t
         WHERE status = 0 AND bname = #{bname}
     </select>
+
+    <!-- b_idx를 반환하는 기능
+    <select id= "getId" parameterType="String" resultMap="map1">
+        SELECT * FROM bbs_t
+        WHERE b_idx = #{b_idx}
+    </select>-->
 
     <!-- 원글 목록 : 인자 3개(bname, begin, end)-->
     <select id="list" parameterType="Map"
@@ -27,12 +36,45 @@
                 AND bname = #{bname}
                 ORDER BY b_idx DESC
             ) a, (SELECT @RN:=0) b <!--b(별칭) sql에서 사용하는 RN이라는 변수 선언-->
-        ) c WHERE c.rnum BETWEEN #{begin} AND #{end}
+        ) c WHERE c.rnum BETWEEN #{begin} AND #{end} <!--rnum: 행-->
     </select>
-    <!-- 원글 저장 -->
 
+    <!-- 원글 저장 -->
+    <insert id="add" parameterType="Map">
+        INSERT INTO bbs_t(subject, writer, content, file_name,
+                ori_name, ip, write_date, hit, bname, status)
+        VALUES(#{subject}, #{writer}, #{content}, #{fname},
+            #{oname}, #{ip}, NOW(), 0, #{bname}, 0)
+    </insert>
+
+    <!--원글 보기-->
+    <select id="getBbs" parameterType="String" resultMap="map1">
+        SELECT * FROM bbs_t
+        WHERE b_idx = #{bIdx}
+    </select>
     <!-- 원글 삭제-->
+    <update id="del" parameterType="String">
+        UPDATE bbs_t
+        SET status = 1
+        WHERE b_idx = #{bIdx}
+    </update>
+
+    <!-- 조회수 증가-->
+    <update id="hit" parameterType="String">
+        UPDATE bbs_t
+        SET hit = hit + 1
+        WHERE b_idx = #{bIdx}
+    </update>
 
     <!-- 원글 수정-->
-
+    <update id="edit" parameterType="Map">
+        SET
+            subject = #{subject},
+            writer = #{writer},
+            content = #{content},
+            file_name = #{fname},
+            ori_name = #{oname}
+        WHERE
+            b_idx = #{bIdx}
+    </update>
 </mapper>

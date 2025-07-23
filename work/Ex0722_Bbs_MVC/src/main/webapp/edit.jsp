@@ -104,20 +104,19 @@
       <tbody>
       <tr>
         <th>제목:</th>
-        <td><input type="text" name="title" id="title" size="45"/></td>
+        <td>${vo.subject}</td>
       </tr>
       <tr>
         <th>이름:</th>
-        <td><input type="text" name="writer" id="writer" size="12"/></td>
+        <td>${vo.writer}</td>
       </tr>
       <tr>
         <th>내용:</th>
-        <td><textarea name="content" cols="50"
-                      id="content" rows="8"></textarea></td>
+        <td>${vo.content}</td>
       </tr>
       <tr>
         <th>첨부파일:</th>
-        <td><input type="file" id="file" name="file"/></td>
+        <td>${vo.file_name}</td>
       </tr>
       <!--
                       <tr>
@@ -127,7 +126,7 @@
       -->
       <tr>
         <td colspan="2">
-          <input type="button" value="보내기"
+          <input type="button" value="수정"
                  onclick="sendData()"/>
           <input type="button" value="다시"/>
           <input type="button" value="목록"/>
@@ -186,15 +185,3 @@
 </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
-
-
-
