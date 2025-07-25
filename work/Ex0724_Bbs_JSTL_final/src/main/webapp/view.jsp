@@ -1,8 +1,7 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page import="mybatis.vo.BbsVO" %>
 <%@ page import="mybatis.vo.CommVO" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -56,8 +55,8 @@
   Object obj = request.getAttribute("vo");
   if(obj != null){
     BbsVO vo = (BbsVO) obj;
-%>--%>
-<c:if test="${requestScope.vo ne null}">
+%>--%> <%--위의 스크립트릿안에 내용을 아래 JSTL 문법으로 바꿈--%>
+<c:if test="${requestScope.vo ne null}"> <%--ne은 '!='와 같다--%>
   <c:set var="vo" value="${requestScope.vo}"/>
 <div id="bbs">
   <form method="post" >
@@ -68,7 +67,7 @@
         <th>제목:</th>
         <td>${vo.subject}</td>
       </tr>
-      <c:if test="${vo.file_name ne null and vo.file_name.length() > 4}">
+      <c:if test="${vo.file_name ne null and vo.file_name.length() > 4}"> <%--첨부파일이 있을경우에만 보여주기--%>
       <tr>
         <th>첨부파일:</th>
         <td><a href="javascript:down('${vo.file_name}')">
@@ -101,7 +100,7 @@
     내용:<textarea rows="4" cols="55" name="content"></textarea><br/>
     비밀번호:<input type="password" name="pwd"/><br/>
 
-    <input type="hidden" name="b_idx" value="${vo.b_idx}"/>
+    <input type="hidden" name="b_idx" value="${vo.b_idx}">
     <input type="hidden" name="cPage" value="${param.cPage}"/>
     <input type="hidden" name="type" value="commadd"/>
     <input type="submit" value="저장하기"/>
@@ -109,6 +108,7 @@
 
   <form name="ff" method="post">
     <input type="hidden" name="type"/>
+    <input type="hidden" name="f_name"/>
     <input type="hidden" name="b_idx" value="${vo.b_idx}"/>
     <input type="hidden" name="cPage" value="${param.cPage}"/>
   </form>
@@ -127,28 +127,19 @@
 
   댓글들<hr/>
   <c:forEach var="cvo" items="${vo.c_list}">
-<%--  <%
-    for(CommVO cvo : vo.getC_list()){
-  %>--%>
   <div>
-    이름:${cvo.writer} <%--&nbsp;&nbsp;--%>
-    날짜:${cvo.write_date}<br/>
+    이름:${cvo.writer}&nbsp;&nbsp;
+    날짜:${cvo.wrtie_date} <br/>
     내용:${cvo.content}
   </div>
   <hr/> <%--밑줄--%>
   </c:forEach>
-<%--  <%
-    }//for의 끝
-  %>--%>
 
 </div>
-<%--<%
-  }// if문의 끝
-%>--%>
 </c:if>
 
 <%-- 표현할 vo객체가 존재하지 않는다면 원래 있던 목록 페이지로 이동한다.--%>
-<c:if test="${requestScope.vo eq null}">
+<c:if test="${requestScope.vo eq null}"> <%--eq는 '==' 와 같다--%>
   <c:redirect url="Controller">
     <c:param name="type" value="list"/>
     <c:param name="cPage" value="${param.cPage}"/>
@@ -187,6 +178,11 @@
     //ff를 찾아야한다!
     document.ff.action = "Controller";
     document.ff.type.value = "edit";
+    document.ff.submit();
+  }
+  function down(fname) {
+    document.ff.action = "download.jsp";
+    document.ff.f_name.value = fname;
     document.ff.submit();
   }
 </script>

@@ -98,82 +98,59 @@
     <tr>
       <td colspan="4">
         <ol class="paging">
-        <c:set var="p" value="${requestScope.page}" scope="page"/> <%--JSTL로 변수 선언--%>
+        <c:set var="p" value="${requestScope.page}" scope="page"/>
 
-        <c:if test="${p.startPage < p.pagePerBlock}">
-          <li class="disable">&lt;</li> <%--이전 버튼 블락!--%>
-        </c:if>
+    <c:if test="${p.startPage < p.pagePerBlock}">
+        <li class="disable">&lt;</li>
+    </c:if>
 <c:if test="${p.startPage >= p.pagePerBlock}">
-          <li><a href="Controller?type=list&cPage=<${p.nowPage-p.pagePerBlock}"><</a></li> <%--이전--%>
+          <li><a href="Controller?type=list&cPage=${p.nowPage-p.pagePerBlock}">&lt;</a></li>
 </c:if>
-<%--<%
-    }//if문의 끝
-    int startPage = p.getStartPage();
-    int endPage = p.getEndPage();
-    for(int i= startPage; i<=endPage; i++){
-        if(p.getNowPage() == i){
-%>--%>
     <c:forEach begin="${p.startPage}" end="${p.endPage}" varStatus="vs">
         <c:if test="${p.nowPage == vs.index}">
-            <li class="now">${vs.index}</li>
+          <li class="now">${vs.index}</li>
         </c:if>
         <c:if test="${p.nowPage != vs.index}">
-            <li><a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a></li>
+          <li><a href="Controller?type=list&cPage=${vs.index}">${vs.index}</a></li>
         </c:if>
     </c:forEach>
 
-        <c:if test="${p.endPage < p.totalPage}">
-            <li><a href="Controller?type=list&cPage=${p.nowPage+p.pagePerBlock}">></a></li> <%--다음--%>
-        </c:if>
-        <c:if test="${p.endPage >= p.totalPage}">
-            <li class="disable">&gt;</li> <%--다음 버튼 블락!--%>
-        </c:if>
+    <c:if test="${p.endPage < p.totalPage}">
+        <li><a href="Controller?type=list&cPage=${p.nowPage+p.pagePerBlock}">&gt;</a></li>
+    </c:if>
+    <c:if test="${p.endPage >= p.totalPage}">
+        <li class="disable">&gt;</li>
+    </c:if>
+
+
         </ol>
       </td>
       <td>
         <input type="button" value="글쓰기"
-               onclick="javascript:location.href='Controller?type=write'"/>
-          <%--javascript:location ~ 이런 형식은 무조건 GET방식이다!--%>
+           onclick="javascript:location.href='Controller?type=write'"/>
       </td>
     </tr>
     </tfoot>
     <tbody>
-<%--<%
-  Object obj = request.getAttribute("ar");
-  if(obj != null){
-    BbsVO[] ar = (BbsVO[]) obj;
-    int i = 0;
-    for(BbsVO vo:ar){
-        int num = p.getTotalCount() - ((p.getNowPage()-1)*p.getNumPerPage()+i); //i는 페이지 번호
-%>--%>
+
     <c:set var="ar" value="${requestScope.ar}"/>
     <c:set var="i" value="0"/>
     <c:forEach items="${ar}" var="vo" varStatus="vs">
         <c:set var="num" value="${p.totalCount -((p.nowPage-1)*p.numPerPage+vs.index)}"/>
-
     <tr>
-      <td><${num}></td>
+      <td>${num}</td>
       <td style="text-align: left">
-        <a href="Controller?type=view&b_idx=${vo.b_idx}&cPage=${nowPage}"> <%--<%=p.getNowPage()%>">--%>
+        <a href="Controller?type=view&b_idx=${vo.b_idx}&cPage=${nowPage}">
           ${vo.subject}
-            <%--<%
-                if(vo.getC_list() != null && vo.getC_list().size() > 0)
-                    out.print("("+vo.getC_list().size()+")");
-            %>--%>
-            <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
-                (<c:out value="${fn:length(vo.c_list)}"/>)
-            </c:if>
+        <c:if test="${vo.c_list != null and fn:length(vo.c_list) > 0}">
+            (<c:out value="${fn:length(vo.c_list)}"/>)
+        </c:if>
         </a>
       </td>
       <td>${vo.writer}</td>
       <td>${vo.write_date}</td>
       <td>${vo.hit}</td>
     </tr>
-<%--<%
-        i++; //인덱스 값 증가
-    }//for의 끝
-  }
-%>--%>
 </c:forEach>
     </tbody>
   </table>
@@ -181,3 +158,4 @@
 </div>
 </body>
 </html>
+
