@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>Title</title>
-    <link rel="stylesheet" href="./css/summernote-lite.css"/> <%--css파일 연결하기--%>
+    <link rel="stylesheet" href="./css/summernote-lite.css"/> <%--외부 css파일 연결하기--%>
     <style>
       article .table{
         width: 600px;
@@ -47,15 +47,15 @@
     <script src="./js/summernote-lite.js"></script> <%--자바스크립트 파일 추가--%>
     <script src="./js/lang/summernote-ko-KR.js"></script> <%--언어추가(한글)--%>
 <script>
-  $(function (){
+  $(function (){ //Html이 모두 로드되고 실행된다.
     $('#content').summernote({
-      lang: "ko-KR",
+      lang: "ko-KR", //한글 언어팩 사용 설정
       height: 300,
       minHeight: 200,
       maxHeight: 400, //높이 최소200 ~ 최대400
       width: 750,
 
-      callbacks:{
+      callbacks:{ //이미지를 드래그앤 드랍하거나 파일선택기에서 이미지 선택했을때 자동으로 실행된다.
         onImageUpload: function (files, editor) {
           //사용자가 이미지를 여러 개 넣을 수 있기 때문에 files라는
           //배열로 인식된다.
@@ -72,7 +72,7 @@
 
   });
 
-  function sendImage(file, editor) {
+  function sendImage(file, editor) { //onImageUpload에서 넘겨받은 이미지 파일을 처리
     //console.log(file.name+":sendImage"); //이미지명 찍힘
 
     // 서버로 이미지 파일을 보내기 위해 반드시 폼객체 준비
@@ -84,7 +84,7 @@
 
     //비동기식 통신
     $.ajax({
-      url: "Controller?type=saveImg",
+      url: "Controller?type=saveImg", //컨트롤러에 요청 보내기
       data: frm,
       type: "post",
       dataType: "json", //서버에서 전달하는 자원의 자료형

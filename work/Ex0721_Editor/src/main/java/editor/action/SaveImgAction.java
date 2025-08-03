@@ -25,7 +25,7 @@ public class SaveImgAction implements Action{
             // 저장된 정확한 파일명을 얻어내자!
             File f = mr.getFile("upload"); //이미지 파일명을 파라미터로 입력
             String f_name = null; //파일이름을 초기화
-            if(f != null) {
+            if(f != null) { //파일이 업로드됐다면,
                 f_name = f.getName(); //저장된 실제 파일명
             }   //JSP에서 사용해야 하므로 request에 저장하자!
             request.setAttribute("f_name",f_name); //f_name이라는 이름으로 저장!
@@ -33,6 +33,6 @@ public class SaveImgAction implements Action{
             e.printStackTrace();
         }
 
-        return "saveImg.jsp";
+        return "saveImg.jsp"; //forward
     }
 }
