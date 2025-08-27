@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 
-public class WriteAction implements Action{
+public classWriteAction implements Action{
     @Override
     public String execute(HttpServletRequest request, HttpServletResponse response) {
 
