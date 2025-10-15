@@ -7,10 +7,12 @@ Thumbs.db
 *.tmp
 *.bak
 /temp
+*.sqlite3
 
 # 3. 환경 변수 파일
 .env
 .venv/
+venv/
 
 # 4. IDE 설정 및 캐시 (IntelliJ, STS)
 # .idea/ 전체를 무시합니다.
@@ -28,3 +30,14 @@ work/Ex0827_SpringEx1/.idea/material_theme_project_new.xml
 *.class
 *.jar
 *.war
+
+# 6. 컴파일된 파일 및 캐시
+__pycache__/
+*.pyc
+
+# 7. 빌드 및 배포
+build/
+dist/
+*.egg-info/
+
+
